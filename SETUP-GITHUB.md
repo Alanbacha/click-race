@@ -6,27 +6,34 @@ Este guia configura o repositório no GitHub, GitHub Actions (CI e deploy) e a i
 
 ## 1. Criar o repositório e fazer o primeiro push
 
-### Opção A: Script automático (recomendado)
+### Opção A: Script que instala tudo (recomendado se não tem GitHub CLI)
 
-No terminal, **dentro da pasta do projeto** (onde está este README):
+No **Terminal** do macOS, na pasta do projeto:
 
 ```bash
-# Instale o GitHub CLI se ainda não tiver: https://cli.github.com/
-gh auth login
+cd /caminho/para/click-race
+chmod +x scripts/install-gh-and-setup-repo.sh
+bash scripts/install-gh-and-setup-repo.sh
+```
 
-# Cria o repo e faz push (pode passar outro nome: ./scripts/create-github-repo.sh meu-click-race)
+O script:
+
+1. Instala o **Homebrew** (se ainda não tiver)
+2. Instala o **GitHub CLI** (`gh`) com `brew install gh`
+3. Pede para você fazer **login no GitHub** no navegador (`gh auth login`)
+4. Cria o repositório no GitHub e faz o primeiro push
+
+Nome do repo: `click-race`. Para outro nome: `bash scripts/install-gh-and-setup-repo.sh meu-repo`.
+
+### Opção B: Só criar o repo (quando já tem `gh` instalado)
+
+```bash
+gh auth login
 chmod +x scripts/create-github-repo.sh
 ./scripts/create-github-repo.sh
 ```
 
-Isso vai:
-
-- Inicializar Git na pasta do projeto (se ainda não for um repo)
-- Fazer o primeiro commit com todos os arquivos (incluindo manifest, `.github/workflows`, etc.)
-- Criar o repositório no GitHub (ex.: `click-race`)
-- Fazer push para `main`
-
-### Opção B: Manual
+### Opção C: Manual (sem scripts)
 
 1. Crie um repositório **vazio** no GitHub (sem README, sem .gitignore).
 2. Na pasta do projeto:
