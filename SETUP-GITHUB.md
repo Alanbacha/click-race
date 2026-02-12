@@ -49,7 +49,41 @@ git push -u origin main
 
 ---
 
-## 2. Secrets no GitHub (para os deploys)
+## 2. Onde ficam as URLs (e em que ordem configurar)
+
+Você **não** precisa das URLs antes do primeiro deploy. Faça assim:
+
+### Passo A: Deploy no Railway (backend) primeiro
+
+1. Railway → **New Project** → **Deploy from GitHub repo** → escolha **click-race**.
+2. No serviço que aparecer: **Settings** → **Root Directory** = **`server`**.
+3. Dê **Deploy** (ou espere o deploy automático).
+4. Depois do deploy: **Settings** → **Networking** → **Generate Domain**. O Railway vai criar uma URL tipo `https://click-race-production-xxxx.up.railway.app`.
+5. **Copie essa URL** → essa é a **URL do backend**. Você vai usar em `NEXT_PUBLIC_SOCKET_URL` no Vercel.
+
+### Passo B: Deploy no Vercel (frontend)
+
+1. Vercel → **Add New Project** → importe o repositório **click-race**.
+2. **Root Directory:** **`client`**.
+3. Em **Environment Variables**, adicione:
+   - Nome: `NEXT_PUBLIC_SOCKET_URL`  
+   - Valor: **a URL do Railway que você copiou** (ex.: `https://click-race-production-xxxx.up.railway.app`).
+4. Clique em **Deploy**.
+5. Quando terminar, a Vercel mostra a URL do site (ex.: `https://click-race-xxx.vercel.app`). **Copie essa URL** → essa é a **URL do frontend**.
+
+### Passo C: Ajustar o backend (CORS)
+
+1. Volte no **Railway** → no mesmo projeto/serviço do backend.
+2. **Variables** → adicione:
+   - Nome: `CORS_ORIGIN`  
+   - Valor: **a URL do Vercel** (ex.: `https://click-race-xxx.vercel.app`).
+3. O Railway faz um novo deploy sozinho. Depois disso, o frontend consegue falar com o backend.
+
+Resumo: **URL do backend** = domínio que o Railway gera. **URL do frontend** = domínio que o Vercel mostra depois do deploy.
+
+---
+
+## 3. Secrets no GitHub (para os deploys)
 
 Em **GitHub → Repositório → Settings → Secrets and variables → Actions** → **New repository secret**.
 
@@ -72,7 +106,7 @@ No Railway, depois de criar o projeto e o serviço para a pasta `server`, você 
 
 ---
 
-## 3. Vercel (frontend)
+## 4. Vercel (frontend)
 
 1. Acesse [vercel.com](https://vercel.com) e conecte sua conta ao GitHub.
 2. **Add New Project** → importe o repositório `click-race`.
@@ -85,7 +119,7 @@ Se quiser que o deploy seja **só** pela GitHub Action (em vez do deploy automá
 
 ---
 
-## 4. Railway (backend)
+## 5. Railway (backend)
 
 1. Acesse [railway.app](https://railway.app) e conecte o GitHub.
 2. **New Project** → **Deploy from GitHub repo** → escolha `click-race`.
@@ -98,7 +132,7 @@ A URL do serviço (ex.: `https://xxx.railway.app`) é a que você usa em `NEXT_P
 
 ---
 
-## 5. O que os workflows fazem
+## 6. O que os workflows fazem
 
 | Workflow | Quando roda | O que faz |
 |----------|------------|-----------|
@@ -108,7 +142,7 @@ A URL do serviço (ex.: `https://xxx.railway.app`) é a que você usa em `NEXT_P
 
 ---
 
-## 6. Resumo rápido
+## 7. Resumo rápido
 
 1. Rodar `./scripts/create-github-repo.sh` (ou criar o repo e dar push manual).
 2. Adicionar os **secrets** no GitHub (Vercel + Railway).
