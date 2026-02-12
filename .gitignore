@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build / Next
+client/.next/
+.next/
+out/
+
+# Env (não commitar segredos)
+.env
+.env.local
+.env.*.local
+client/.env.local
+
+# Debug
+.cursor/
+*.log
+debug.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Vercel
+.vercel
+
+# Railway
+.railway
